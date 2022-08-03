@@ -30,7 +30,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -129,7 +128,7 @@ public class CoxAdditionsPlugin extends Plugin implements KeyListener
     private boolean isInstanceTimerRunning = false;
 
     @Getter (AccessLevel.PACKAGE)
-    private LocalPoint olmTile = null;
+    private NPC olmHead = null;
 
     @Getter (AccessLevel.PACKAGE)
     private final List<String> tlList = new ArrayList<>();
@@ -195,7 +194,7 @@ public class CoxAdditionsPlugin extends Plugin implements KeyListener
         coxHerb2 = null;
         coxHerbTimer2 = 16;
 
-        olmTile = null;
+        olmHead = null;
 
         ids.add(MAGE);
         ids.add(RANGE);
@@ -530,11 +529,11 @@ public class CoxAdditionsPlugin extends Plugin implements KeyListener
                 {
                     if (id == 7551)
                     {
-                        olmTile = npc.getLocalLocation();
+                        olmHead = npc;
                     }
                     else if (id == 7554)
                     {
-                        olmTile = null;
+                        olmHead = null;
                     }
                 }
             }
@@ -556,7 +555,7 @@ public class CoxAdditionsPlugin extends Plugin implements KeyListener
                 {
                     if (id == 7551)
                     {
-                        olmTile = null;
+                        olmHead = null;
                     }
                 }
             }
@@ -573,7 +572,7 @@ public class CoxAdditionsPlugin extends Plugin implements KeyListener
 
             if (id == 7554)
             {
-                olmTile = null;
+                olmHead = null;
             }
         }
     }

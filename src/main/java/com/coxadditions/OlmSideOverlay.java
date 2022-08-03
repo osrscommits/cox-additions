@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
+
+import jdk.vm.ci.meta.Local;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -34,19 +36,23 @@ public class OlmSideOverlay extends Overlay
 
     public Dimension render(Graphics2D graphics)
     {
-        if (config.olmSide() && plugin.getOlmTile() != null)
+        if (config.olmSide() && plugin.getOlmHead() != null)
         {
-            LocalPoint lp = plugin.getOlmTile();
+            NPC olmHead = plugin.getOlmHead();
+
+            LocalPoint lp = olmHead.getLocalLocation();
+            Polygon poly = olmHead.getCanvasTilePoly();
+
             if (lp != null)
             {
                 WorldPoint wp = WorldPoint.fromLocal(client, lp);
-                drawTile(graphics, wp, config.olmSideColor());
+                drawTile(graphics, wp, poly, config.olmSideColor());
             }
         }
         return null;
     }
 
-    protected void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+    protected void drawTile(Graphics2D graphics, WorldPoint point, Polygon poly, Color color)
     {
         if (client.getLocalPlayer() != null)
         {
@@ -56,7 +62,6 @@ public class OlmSideOverlay extends Overlay
                 LocalPoint lp = LocalPoint.fromWorld(client, point);
                 if (lp != null)
                 {
-                    Polygon poly = Perspective.getCanvasTilePoly(client, lp);
                     if (poly != null)
                     {
                         graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
